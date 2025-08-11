@@ -48,7 +48,7 @@ process GSEA_GSEA {
     // GSEA doesn't produce double-dotted top-level outputs
     def rpt_label = prefix.replaceAll('\\.$', '')
 
-    def chip_command = chip ? "-chip $chip -collapse true" : ''
+    def chip_command = chip ? "-chip \"$chip\" -collapse true" : ''
     """
     # Run GSEA
 
@@ -56,7 +56,7 @@ process GSEA_GSEA {
         -res "$gct" \\
         -cls "${cls}#${target}_versus_${reference}" \\
         -gmx "$gene_sets" \\
-        "$chip_command" \\
+        $chip_command \\
         -out . \\
         --rpt_label "$rpt_label" \\
         $args
