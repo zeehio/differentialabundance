@@ -53,28 +53,28 @@ process GSEA_GSEA {
     # Run GSEA
 
     gsea-cli GSEA \\
-        -res $gct \\
-        -cls ${cls}#${target}_versus_${reference} \\
-        -gmx $gene_sets \\
-        $chip_command \\
+        -res "$gct" \\
+        -cls "${cls}#${target}_versus_${reference}" \\
+        -gmx "$gene_sets" \\
+        "$chip_command" \\
         -out . \\
-        --rpt_label $rpt_label \\
+        --rpt_label "$rpt_label" \\
         $args
 
     # Un-timestamp the outputs for path consistency
-    mv ${rpt_label}.Gsea.*/* .
+    mv "${rpt_label}".Gsea.*/* .
     timestamp=\$(cat *.rpt | grep producer_timestamp | awk '{print \$2}')
 
     for pattern in _\${timestamp} .\${timestamp}; do
         find . -name "*\${pattern}*" | sed "s|^\\./||" | while read -r f; do
-            mv \$f \${f//\$pattern/}
+            mv "\$f" "\${f//\$pattern/}"
         done
     done
     sed -i.bak "s/[_\\.]\$timestamp//g" *.rpt *.html && rm *.bak
 
     # Prefix files that currently lack it
     ls -p | grep -v / | grep -v "$prefix" | while read -r f; do
-        mv \$f ${prefix}\${f}
+        mv "\$f" "${prefix}\${f}"
         sed -i.bak "s/\$f/${prefix}\${f}/g" *.rpt *.html && rm *.bak
     done
 
