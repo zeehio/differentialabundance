@@ -123,6 +123,7 @@ process RMARKDOWNNOTEBOOK {
 
     # Render notebook
     Rscript - <<EOF
+        options("pandoc.stack.size" = "4000m")
         ${indent_code_block(render_cmd, 8)}
         writeLines(capture.output(sessionInfo()), "session_info.log")
     EOF
